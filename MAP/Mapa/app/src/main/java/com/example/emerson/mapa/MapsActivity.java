@@ -52,8 +52,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         miUbicacion();
 
         // Add a marker in Sydney and move the camera
-        LatLng CEI = new LatLng(-34.905407, -54.955797);
-        mMap.addMarker(new MarkerOptions().position(CEI).title("Marca en el CEI"));
+       // LatLng CEI = new LatLng(-34.905407, -54.955797);
+       // mMap.addMarker(new MarkerOptions().position(CEI).title("Marca en el CEI"));
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(CEI));
     }
 
@@ -66,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marcador = mMap.addMarker(new MarkerOptions()
                     .position(coordenadas)
                     .title("Mi Posición")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+                   /* .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))*/);
             mMap.animateCamera(miUbicacion);
 
     }

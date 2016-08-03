@@ -2,7 +2,7 @@ var pg = require('pg');
 
 module.exports = {
   connect: function () {
-    var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/finder';
+    var connectionString = process.env.DATABASE_URL || 'postgres://postgres:groot99@localhost:5433/taller';
     var client = new pg.Client(connectionString);
     client.connect();
     return client;

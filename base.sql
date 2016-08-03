@@ -2,7 +2,7 @@
 -- PostgreSQL database cluster dump
 --
 
--- Started on 2016-08-02 21:11:59
+-- Started on 2016-08-02 21:34:50
 
 SET default_transaction_read_only = off;
 
@@ -45,7 +45,7 @@ SET default_transaction_read_only = off;
 -- Dumped from database version 9.5.3
 -- Dumped by pg_dump version 9.5.3
 
--- Started on 2016-08-02 21:11:59
+-- Started on 2016-08-02 21:34:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -360,7 +360,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-08-02 21:12:02
+-- Completed on 2016-08-02 21:34:50
 
 --
 -- PostgreSQL database dump complete
@@ -377,7 +377,7 @@ SET default_transaction_read_only = off;
 -- Dumped from database version 9.5.3
 -- Dumped by pg_dump version 9.5.3
 
--- Started on 2016-08-02 21:12:02
+-- Started on 2016-08-02 21:34:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -442,7 +442,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-08-02 21:12:03
+-- Completed on 2016-08-02 21:34:50
 
 --
 -- PostgreSQL database dump complete
@@ -459,7 +459,7 @@ SET default_transaction_read_only = off;
 -- Dumped from database version 9.5.3
 -- Dumped by pg_dump version 9.5.3
 
--- Started on 2016-08-02 21:12:03
+-- Started on 2016-08-02 21:34:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -478,7 +478,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 3462 (class 0 OID 0)
+-- TOC entry 3458 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -495,7 +495,7 @@ CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
 
 
 --
--- TOC entry 3463 (class 0 OID 0)
+-- TOC entry 3459 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: 
 --
@@ -512,7 +512,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 
 --
--- TOC entry 3464 (class 0 OID 0)
+-- TOC entry 3460 (class 0 OID 0)
 -- Dependencies: 3
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
 --
@@ -556,7 +556,7 @@ CREATE SEQUENCE checks_id_seq
 ALTER TABLE checks_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3465 (class 0 OID 0)
+-- TOC entry 3461 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: checks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -565,42 +565,18 @@ ALTER SEQUENCE checks_id_seq OWNED BY checks.id;
 
 
 --
--- TOC entry 203 (class 1259 OID 20024)
+-- TOC entry 202 (class 1259 OID 20038)
 -- Name: lugares; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE lugares (
     id integer NOT NULL,
-    nombre text,
-    punto point
+    nombre character varying(255) NOT NULL,
+    punto geography(Point,4326)
 );
 
 
 ALTER TABLE lugares OWNER TO postgres;
-
---
--- TOC entry 202 (class 1259 OID 20022)
--- Name: lugares_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE lugares_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE lugares_id_seq OWNER TO postgres;
-
---
--- TOC entry 3466 (class 0 OID 0)
--- Dependencies: 202
--- Name: lugares_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE lugares_id_seq OWNED BY lugares.id;
-
 
 --
 -- TOC entry 199 (class 1259 OID 19988)
@@ -631,7 +607,7 @@ CREATE SEQUENCE usuarios_id_seq
 ALTER TABLE usuarios_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3467 (class 0 OID 0)
+-- TOC entry 3462 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: usuarios_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -640,7 +616,7 @@ ALTER SEQUENCE usuarios_id_seq OWNED BY usuarios.id;
 
 
 --
--- TOC entry 3318 (class 2604 OID 19999)
+-- TOC entry 3316 (class 2604 OID 19999)
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -648,15 +624,7 @@ ALTER TABLE ONLY checks ALTER COLUMN id SET DEFAULT nextval('checks_id_seq'::reg
 
 
 --
--- TOC entry 3319 (class 2604 OID 20027)
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY lugares ALTER COLUMN id SET DEFAULT nextval('lugares_id_seq'::regclass);
-
-
---
--- TOC entry 3317 (class 2604 OID 19991)
+-- TOC entry 3315 (class 2604 OID 19991)
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -664,7 +632,7 @@ ALTER TABLE ONLY usuarios ALTER COLUMN id SET DEFAULT nextval('usuarios_id_seq':
 
 
 --
--- TOC entry 3452 (class 0 OID 19996)
+-- TOC entry 3449 (class 0 OID 19996)
 -- Dependencies: 201
 -- Data for Name: checks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -674,7 +642,7 @@ COPY checks (id, idusuario, idlugar) FROM stdin;
 
 
 --
--- TOC entry 3468 (class 0 OID 0)
+-- TOC entry 3463 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: checks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -683,27 +651,18 @@ SELECT pg_catalog.setval('checks_id_seq', 1, false);
 
 
 --
--- TOC entry 3454 (class 0 OID 20024)
--- Dependencies: 203
+-- TOC entry 3450 (class 0 OID 20038)
+-- Dependencies: 202
 -- Data for Name: lugares; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY lugares (id, nombre, punto) FROM stdin;
-1	cei	(-34.905379000000003,-54.955723999999996)
+1	llllll	0101000020E61000003CDBA337DCC351C06D37C1374D374840
 \.
 
 
 --
--- TOC entry 3469 (class 0 OID 0)
--- Dependencies: 202
--- Name: lugares_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('lugares_id_seq', 1, false);
-
-
---
--- TOC entry 3316 (class 0 OID 18883)
+-- TOC entry 3314 (class 0 OID 18883)
 -- Dependencies: 184
 -- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -713,7 +672,7 @@ COPY spatial_ref_sys  FROM stdin;
 
 
 --
--- TOC entry 3450 (class 0 OID 19988)
+-- TOC entry 3447 (class 0 OID 19988)
 -- Dependencies: 199
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -726,7 +685,7 @@ COPY usuarios (id, nombre) FROM stdin;
 
 
 --
--- TOC entry 3470 (class 0 OID 0)
+-- TOC entry 3464 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -735,7 +694,7 @@ SELECT pg_catalog.setval('usuarios_id_seq', 3, true);
 
 
 --
--- TOC entry 3323 (class 2606 OID 20001)
+-- TOC entry 3320 (class 2606 OID 20001)
 -- Name: checks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -744,16 +703,16 @@ ALTER TABLE ONLY checks
 
 
 --
--- TOC entry 3327 (class 2606 OID 20032)
--- Name: lugares_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3324 (class 2606 OID 20045)
+-- Name: points_primary_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY lugares
-    ADD CONSTRAINT lugares_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT points_primary_key PRIMARY KEY (id);
 
 
 --
--- TOC entry 3325 (class 2606 OID 20003)
+-- TOC entry 3322 (class 2606 OID 20003)
 -- Name: unico; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -762,7 +721,7 @@ ALTER TABLE ONLY checks
 
 
 --
--- TOC entry 3321 (class 2606 OID 19993)
+-- TOC entry 3318 (class 2606 OID 19993)
 -- Name: usuarios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -771,7 +730,7 @@ ALTER TABLE ONLY usuarios
 
 
 --
--- TOC entry 3461 (class 0 OID 0)
+-- TOC entry 3457 (class 0 OID 0)
 -- Dependencies: 8
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -782,7 +741,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-08-02 21:12:03
+-- Completed on 2016-08-02 21:34:51
 
 --
 -- PostgreSQL database dump complete
@@ -799,7 +758,7 @@ SET default_transaction_read_only = off;
 -- Dumped from database version 9.5.3
 -- Dumped by pg_dump version 9.5.3
 
--- Started on 2016-08-02 21:12:03
+-- Started on 2016-08-02 21:34:51
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -847,13 +806,13 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-08-02 21:12:06
+-- Completed on 2016-08-02 21:34:51
 
 --
 -- PostgreSQL database dump complete
 --
 
--- Completed on 2016-08-02 21:12:06
+-- Completed on 2016-08-02 21:34:51
 
 --
 -- PostgreSQL database cluster dump complete

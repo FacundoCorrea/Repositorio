@@ -5,8 +5,8 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
   var client = pgClient.connect();
-  var queryString = 'SELECT * FROM points as p ' +
-    'WHERE ST_DWithin(p.location, ' +
+  var queryString = 'SELECT * FROM lugares as p ' +
+    'WHERE ST_DWithin(p.punto, ' +
     'Geography(ST_MakePoint($1, $2)), ' +
     '100);';
   var query = client.query(queryString, [req.query.lng, req.query.lat]);
@@ -17,8 +17,8 @@ router.get('/', function (req, res) {
 
 router.get('/:id/details', function (req, res) {
   var client = pgClient.connect();
-  var queryString = 'SELECT id, description, ST_AsGeoJSON(location) AS location ' +
-    'FROM points ' +
+  var queryString = 'SELECT id, nombre, ST_AsGeoJSON(punto) AS punto   ' +
+    'FROM lugares ' +
     'WHERE id = $1;';
   var query = client.query(queryString, [req.params.id]);
   query.on('end', function (result) {

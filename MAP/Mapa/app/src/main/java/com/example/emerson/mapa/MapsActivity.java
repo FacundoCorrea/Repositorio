@@ -28,6 +28,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     double lat = 0.0;
     double lng = 0.0;
+    Marker Punto ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                
                 Toast.makeText(MapsActivity.this,"JAJAJAJa",Toast.LENGTH_SHORT).show();
             }
         });
@@ -65,7 +67,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
                 marker.getPosition();
-                Toast.makeText(MapsActivity.this,marker.getPosition().toString(),Toast.LENGTH_SHORT).show();
+                Punto = marker;
+                //Toast.makeText(MapsActivity.this,marker.getPosition().toString(),Toast.LENGTH_SHORT).show();
 
                 return true;
 
@@ -113,8 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         public void onProviderEnabled(String s) {
-
-        }
+  }
 
         @Override
         public void onProviderDisabled(String s) {

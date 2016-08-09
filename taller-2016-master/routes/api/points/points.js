@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
 
 router.get('/:id/details', function (req, res) {
   var client = pgClient.connect();
-  var queryString = 'SELECT id, nombre, ST_AsGeoJSON(punto) AS location   ' +
+  var queryString = 'SELECT id, description, ST_AsGeoJSON(punto) AS location   ' +
     'FROM lugares ' +
     'WHERE id = $1;';
   var query = client.query(queryString, [req.params.id]);

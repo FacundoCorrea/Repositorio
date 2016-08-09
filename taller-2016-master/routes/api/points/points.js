@@ -3,6 +3,7 @@ var morgan = require('morgan');
 var pgClient = require('../../../utils/database_connection');
 var router = express.Router();
 
+// localhost/blablabla?lng=123&lat=123
 router.get('/', function (req, res) {
   var client = pgClient.connect();
   var queryString = 'SELECT id, nombre, ST_AsGeoJSON(punto) AS location FROM lugares as p ' +
@@ -20,7 +21,9 @@ router.get('/', function (req, res) {
     res.send(points);
   });
 });
-
+// localhost/blabla/123/details
+// localhost/blabla/321/details
+// donde 123 y 321 = :id
 router.get('/:id/details', function (req, res) {
   var client = pgClient.connect();
   var queryString = 'SELECT id, description, ST_AsGeoJSON(punto) AS location   ' +
@@ -32,6 +35,28 @@ router.get('/:id/details', function (req, res) {
     var point = result.rows[0];
     point.location = JSON.parse(point['location']);
     res.send(point);
+  });
+});
+router.get('/:id/existe', function (req, res) {
+  console.log(req, res);
+  var client = pgClient.connect();
+  var querystring =' select count(*) from usuarios where id =$1' ;
+  var query = client.query(querystring, [req.params.id]);
+  query.on('end', function (result) {
+    client.end();
+    var resultado =result;
+    res.send(resultado.rows);
+  });
+});
+router.get('/:id/cantidadLugares', function (req, res) {
+  console.log(req, res);
+  var client = pgClient.connect();
+  var querystring =' select count(*) from checks where idUsuario =$1' ;
+  var query = client.query(querystring, [req.params.id]);
+  query.on('end', function (result) {
+    client.end();
+      var resultado =result;
+    res.send(resultado.rows);
   });
 });
 

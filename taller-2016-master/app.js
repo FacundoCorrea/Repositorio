@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api/points', pointsApi);
-app.use('/api/users/check', checkApi);
+app.use('/api/users', checkApi);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) { //eslint-disable-line no-unused-vars

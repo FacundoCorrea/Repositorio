@@ -7,11 +7,7 @@ router.post('/', function (req, res, next) {
   var client = pgClient.connect();
   var queryGetId = pgClient.getNextId(client);
   queryGetId.on('end', function () {
-    /*
-     SELECT *
-     FROM your_table
-     WHERE ST_Distance_Sphere(the_geom, ST_MakePoint(your_lon,your_lat)) <= radius_mi * 1609.34
-     */
+
     var query = client.query('SELECT * FROM points');
     query.on('end', function () {
       client.end();
@@ -19,6 +15,18 @@ router.post('/', function (req, res, next) {
         status: 'success'
       });
     });
+  });
+});
+//si existe te devuelve 1 sino 0
+router.get('/:id/existe', function (req, res) {
+  console.log(req, res);
+  var client = pgClient.connect();
+  var querystring =' select count(*) from usuarios where id =$1' ;
+  var query = client.query(querystring, [req.params.id]);
+  query.on('end', function (result) {
+    client.end();
+    var resultado =result;
+    res.send(resultado.rows);
   });
 });
 

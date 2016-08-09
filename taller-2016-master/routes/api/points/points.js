@@ -59,5 +59,16 @@ router.get('/:id/cantidadLugares', function (req, res) {
     res.send(resultado.rows);
   });
 });
-
+//localhost/points/lat/lng/check
+router.get('/:lat/:lng/check', function (req, res) {
+  console.log(req, res);
+  var client = pgClient.connect();
+  var querystring =' select count(*) from checks where idUsuario =$1' ;
+  var query = client.query(querystring, [req.params.id]);
+  query.on('end', function (result) {
+    client.end();
+    var resultado =1;
+    res.send(resultado);
+  });
+});
 module.exports = router;

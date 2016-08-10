@@ -42,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     double lat = 0.0;
     double lng = 0.0;
-    Marker Punto ;
+    Marker Punto;
     RequestQueue queue;
     List<Lugar> lugares;
 
@@ -54,17 +54,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        queue= Volley.newRequestQueue(this);
-        lugares=new ArrayList<>();
-        Button boton =(Button) findViewById(R.id.button);
+        queue = Volley.newRequestQueue(this);
+        lugares = new ArrayList<>();
+        Button boton = (Button) findViewById(R.id.button);
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(MapsActivity.this,"JAJAJAJa",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "JAJAJAJa", Toast.LENGTH_SHORT).show();
             }
         });
-        PPPP();
+        Puntos();
     }
 
 
@@ -94,9 +94,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         // Add a marker in Sydney and move the camera
-       // LatLng CEI = new LatLng(-34.905407, -54.955797);
-       // mMap.addMarker(new MarkerOptions().position(CEI).title("Marca en el CEI"));
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(CEI));
+        // LatLng CEI = new LatLng(-34.905407, -54.955797);
+        // mMap.addMarker(new MarkerOptions().position(CEI).title("Marca en el CEI"));
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(CEI));
     }
 
     private void AgregarMarca(double lat, double lng) {
@@ -105,11 +105,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (marcador != null) {
             marcador.remove();
         }
-            marcador = mMap.addMarker(new MarkerOptions()
-                    .position(coordenadas)
-                    .title("Mi Posición")
+        marcador = mMap.addMarker(new MarkerOptions()
+                        .position(coordenadas)
+                        .title("Mi Posición")
                    /* .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))*/);
-            mMap.animateCamera(miUbicacion);
+        mMap.animateCamera(miUbicacion);
 
     }
 
@@ -124,6 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
+            Toast.makeText(MapsActivity.this, "Tu ubicacion ha cambiado", Toast.LENGTH_SHORT).show();
             actualizarUbicacion(location);
         }
 
@@ -134,7 +135,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         public void onProviderEnabled(String s) {
-  }
+        }
 
         @Override
         public void onProviderDisabled(String s) {
@@ -143,19 +144,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     };
 
     private void miUbicacion() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         actualizarUbicacion(location);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,15000,0,locListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, locListener);
     }
 
-    private void PPPP()
-    {
-        String URL = "http://10.0.2.2:3000/api/points";
+    private void Puntos() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        String URL = "http://10.0.2.2:3000/api/points?lng="+location.getLongitude()+"&lat="+location.getLatitude();
         JsonArrayRequest req = new JsonArrayRequest(URL,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -167,11 +171,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Lugar lugar = new Lugar();
                                 lugar.setId(object.getInt("id"));
                                 lugar.setDescription("description");
-                                JSONObject location= object.getJSONObject("location");
-                                JSONArray array=location.getJSONArray("coordinates");
+                                JSONObject location = object.getJSONObject("location");
+                                JSONArray array = location.getJSONArray("coordinates");
                                 double[] coords = new double[2];
-                                coords[0] = (double)array.get(0);
-                                coords[1] = (double)array.get(1);
+                                coords[0] = (double) array.get(0);
+                                coords[1] = (double) array.get(1);
                                 lugar.setCoordenadas(coords);
 
                                 lugares.add(lugar);
@@ -193,6 +197,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         queue.add(req);
+    }
+
+    private void Check()
+    {
+       // String URL = "http://10.0.2.2:3000/api/points?idPunto="+Punto.getId()+"&idUsuario="+Usuario+"/check";
     }
 }
 

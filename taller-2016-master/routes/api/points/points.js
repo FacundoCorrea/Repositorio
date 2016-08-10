@@ -67,11 +67,11 @@ router.get('/:idUsuario/:idLugar/check', function (req, res) {
   var fechaMin = fecha - 3600000;
   var querystring1 = 'select * from checks where idUsuario=$1 and idLugar=$2 and fecha>$3';
   var query1 = client.query(querystring1, [req.params.idUsuario, req.params.idLugar, fechaMin]);
-  query1.on('end', function (result) {
-    if (result.rows.length !== 0) {
+  query1.on('end', function (result1) {
+    if (result1.rows.length == 0) {
       var querystring2 = 'insert into checks (idUsuario,idLugar,fecha) values ($1,$2,$3)';
-      var query = client.query(querystring2, [req.params.idUsuario, req.params.idLugar, fecha]);
-      query.on('end', function (result1) {
+      var query2 = client.query(querystring2, [req.params.idUsuario, req.params.idLugar, fecha]);
+      query2.on('end', function (result2) {
         client.end();
         res.send(true);
       });

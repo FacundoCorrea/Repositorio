@@ -59,16 +59,20 @@ router.get('/:id/cantidadLugares', function (req, res) {
     res.send(resultado.rows);
   });
 });
-//localhost/points/lat/lng/check
-router.get('/:lat/:lng/check', function (req, res) {
+//localhost/idUsuario/idLugar/check
+router.get('/:idUsuario/:idLugar/check', function (req, res) {
   console.log(req, res);
   var client = pgClient.connect();
-  var querystring =' select count(*) from checks where idUsuario =$1' ;
-  var query = client.query(querystring, [req.params.id]);
+  function toTimestamp(year,month,day,hour,minute,second){
+    var datum = new Date(Date.UTC(year,month-1,day,hour,minute,second));
+    return datum.getTime()/1000;
+  }
+  var fecha =toTimestamp();
+  var querystring ='insert into checks (idUsuario,idLugar,fecha) values ($1,$2,$3)' ;
+  var query = client.query(querystring,[req.params.idUsuario ,req.params.idLugar, fecha]);
   query.on('end', function (result) {
     client.end();
-    var resultado =1;
-    res.send(resultado);
+    res.send(result.rows);
   });
 });
 module.exports = router;

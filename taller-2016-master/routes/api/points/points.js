@@ -63,16 +63,22 @@ router.get('/:id/cantidadLugares', function (req, res) {
 router.get('/:idUsuario/:idLugar/check', function (req, res) {
   console.log(req, res);
   var client = pgClient.connect();
-  function toTimestamp(year,month,day,hour,minute,second){
-    var datum = new Date(Date.UTC(year,month-1,day,hour,minute,second));
-    return datum.getTime()/1000;
-  }
-  var fecha =toTimestamp();
-  var querystring ='insert into checks (idUsuario,idLugar,fecha) values ($1,$2,$3)' ;
-  var query = client.query(querystring,[req.params.idUsuario ,req.params.idLugar, fecha]);
-  query.on('end', function (result) {
-    client.end();
-    res.send(result.rows);
+  var fecha = new Date().getTime();
+  var fechaMin = fecha - 3600000;
+  var querystring1 = 'select * from checks where idUsuario=$1 and idLugar=$2 and fecha>$3';
+  var query1 = client.query(querystring1, [req.params.idUsuario, req.params.idLugar, fechaMin]);
+  query1.on('end', function (result) {
+    if (result.rows.length !== 0) {
+      var querystring2 = 'insert into checks (idUsuario,idLugar,fecha) values ($1,$2,$3)';
+      var query = client.query(querystring2, [req.params.idUsuario, req.params.idLugar, fecha]);
+      query.on('end', function (result1) {
+        client.end();
+        res.send(true);
+      });
+    } else {
+      client.end();
+      res.send(false);
+    }
   });
 });
 module.exports = router;

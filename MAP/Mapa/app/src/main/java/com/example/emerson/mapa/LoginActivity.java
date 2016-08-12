@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Usuario = Integer.parseInt(editText.getText().toString());
                 Login();
+                Toast.makeText(getApplicationContext(),"EL USUARIO NO EXISTE", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login()
     {
-        String URL = "http://10.0.2.2:3000/api/users?id="+Usuario;
+        String URL = "http://10.0.2.2:3000/api/users?id="+Usuario+"/existe";
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 URL, null, new Response.Listener<JSONObject>() {
 

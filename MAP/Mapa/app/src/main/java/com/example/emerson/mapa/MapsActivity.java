@@ -57,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queue = Volley.newRequestQueue(this);
         lugares = new ArrayList<>();
         Button boton = (Button) findViewById(R.id.button);
+        Puntos();
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

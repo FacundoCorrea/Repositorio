@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Usuario = Integer.parseInt(editText.getText().toString());
                 Login();
-                Toast.makeText(getApplicationContext(),"EL USUARIO NO EXISTE", Toast.LENGTH_SHORT).show();
+
 
             }
         });

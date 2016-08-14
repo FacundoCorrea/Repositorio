@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login()
     {
-        String URL = "http://10.0.2.2:3000/api/users?id="+Usuario+"/existe";
+        String URL = "http://192.168.1.43:3000/api/users?id="+Usuario+"/existe";
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 URL, null, new Response.Listener<JSONObject>() {
 

@@ -50,10 +50,12 @@ public class LoginActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 URL, null, new Response.Listener<JSONObject>() {
 
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    result = response.getInt("count");
+                    Toast.makeText(getApplicationContext(),"EL USUARIO NO EXISTE", Toast.LENGTH_SHORT).show();
+                    result = Integer.parseInt(response.getString("count"));
                     Check();
                 }
                 catch(Exception e){
@@ -74,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         if(result == 1)
         {
             startActivity(new Intent(LoginActivity.this,MapsActivity.class));
+
         }
         else{Toast.makeText(getApplicationContext(),"EL USUARIO NO EXISTE", Toast.LENGTH_SHORT).show();}
     }

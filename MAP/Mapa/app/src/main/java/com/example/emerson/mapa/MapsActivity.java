@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(MapsActivity.this, "JAJAJAJa", Toast.LENGTH_SHORT).show();
             }
         });
-
+        Puntos();
     }
 
 
@@ -119,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lat = location.getLatitude();
             lng = location.getLongitude();
             AgregarMarca(lat, lng);
-
         }
     }
 
@@ -128,7 +127,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onLocationChanged(Location location) {
             Toast.makeText(MapsActivity.this, "Tu ubicacion ha cambiado", Toast.LENGTH_SHORT).show();
             actualizarUbicacion(location);
-            Puntos();
         }
 
         @Override
@@ -162,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        String URL = "http://192.168.1.43:3000/api/points?lng="+location.getLongitude()+"&lat="+location.getLatitude();
+        String URL = "http://10.0.2.2:3000/api/points?lng="+location.getLongitude()+"&lat="+location.getLatitude();
         JsonArrayRequest req = new JsonArrayRequest(URL,
                 new Response.Listener<JSONArray>() {
                     @Override

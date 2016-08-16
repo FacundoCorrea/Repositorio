@@ -59,7 +59,9 @@ router.get('/:id/cantidadLugares', function (req, res) {
     res.send(resultado.rows);
   });
 });
-//localhost/idUsuario/idLugar/check
+//como lo estas llamando desde el postman?
+//localhost/p
+//and fecha>$3'
 router.get('/:idUsuario/:idLugar/check', function (req, res) {
   console.log(req, res);
   var client = pgClient.connect();
@@ -68,16 +70,19 @@ router.get('/:idUsuario/:idLugar/check', function (req, res) {
   var querystring1 = 'select * from checks where idUsuario=$1 and idLugar=$2 and fecha>$3';
   var query1 = client.query(querystring1, [req.params.idUsuario, req.params.idLugar, fechaMin]);
   query1.on('end', function (result1) {
+    var success;
     if (result1.rows.length == 0) {
       var querystring2 = 'insert into checks (idUsuario,idLugar,fecha) values ($1,$2,$3)';
       var query2 = client.query(querystring2, [req.params.idUsuario, req.params.idLugar, fecha]);
       query2.on('end', function (result2) {
         client.end();
-        res.send(true);
+        success = true;
+        res.send(success);
       });
     } else {
       client.end();
-      res.send(false);
+      success = false;
+      res.send(success);
     }
   });
 });

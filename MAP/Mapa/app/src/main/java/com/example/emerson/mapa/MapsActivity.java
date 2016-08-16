@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,32 +60,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queue = Volley.newRequestQueue(this);
         lugares = new ArrayList<>();
         Button boton = (Button) findViewById(R.id.button);
-       // Puntos();
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                check();
                 Toast.makeText(MapsActivity.this, "JAJAJAJa", Toast.LENGTH_SHORT).show();
             }
         });
-        //Puntos();
+
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         miUbicacion();
-        //Puntos();
+       Puntos();
+       AgregarLugares();
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -93,16 +83,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(MapsActivity.this,marker.getPosition().toString(),Toast.LENGTH_SHORT).show();
                 return true;
 
-
             }
         });
-
-        // Add a marker in Sydney and move the camera
-        // LatLng CEI = new LatLng(-34.905407, -54.955797);
-        // mMap.addMarker(new MarkerOptions().position(CEI).title("Marca en el CEI"));
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(CEI));
     }
 
+    public void check()
+    {
+        String idPunto= Punto.getSnippet();
+        String url = "http://192.168.1.43:3000/api/points/"+1+"/"+idPunto+"/check" ;
+        mMap.clear();
+        StringRequest checkPunto = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        
+                        Puntos();
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        );
+        queue.add(checkPunto);
+
+    }
     private void AgregarMarca(double lat, double lng) {
 
         LatLng coordenadas = new LatLng(lat, lng);
@@ -133,10 +143,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            //Toast.makeText(MapsActivity.this, "Tu ubicacion ha cambiado", Toast.LENGTH_SHORT).show();
             actualizarUbicacion(location);
-            Puntos();
-            AgregarLugares();
+           Puntos();
+           AgregarLugares();
         }
 
         @Override
@@ -161,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         actualizarUbicacion(location);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locListener);
     }
     private void Puntos() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -179,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 JSONObject object = (JSONObject) response.get(i);
                                 Lugar lugar = new Lugar();
-                                lugar.setId(object.getInt("id"));
+                                lugar.setId(object.getString("id"));
                                 lugar.setDescription("description");
                                 JSONObject location = object.getJSONObject("location");
                                 JSONArray array = location.getJSONArray("coordinates");
@@ -213,44 +222,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void AgregarLugares()
     {
         int i = 0;
-
-
         for (Lugar l : lugares) {
             double[] coordenadas = l.getCoordenadas();
             LatLng Posicion = new LatLng(coordenadas[0],coordenadas[1]);
-            mMap.addMarker(new MarkerOptions().position(Posicion).title(l.getDescription()));
+            mMap.addMarker(new MarkerOptions().position(Posicion).title(l.getDescription()).snippet((l.getId())));
         }
     }
-   /* private void Check()
-    {
-       // String URL = "http://10.0.2.2:3000/api/points?idPunto="+Punto.getId()+"&idUsuario="+Usuario+"/check";
-        String idPunto= ultimoMarker.getSnippet();//mandamos los parametros a manopla
-        final String url = "http://10.0.2.2:3000/api/points/check?idUsuario="+miUser.getId()+"&idPunto="+idPunto; // aca tenemos que pasar los parametros de donde estamos parados
-        RequestQueue queue = Volley.newRequestQueue(this);
-        mMap.clear();
-
-        StringRequest checkPunto = new StringRequest(Request.Method.POST, url,
-
-
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-
-                        cargarPuntos(lat,lng);
-                        cargarScores();
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-        );
-        queue.add(checkPunto);
-
-    }*/
 }
-

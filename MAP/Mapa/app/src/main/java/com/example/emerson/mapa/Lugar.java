@@ -1,11 +1,15 @@
 package com.example.emerson.mapa;
 
 public class Lugar {
-    public int getId() {
+    private String id ;
+    private String description;
+    private double[] coordenadas;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -24,8 +28,4 @@ public class Lugar {
     public void setCoordenadas(double[] coordenadas) {
         this.coordenadas = coordenadas;
     }
-
-    private int id ;
-    private String description;
-    private double[] coordenadas;
 }

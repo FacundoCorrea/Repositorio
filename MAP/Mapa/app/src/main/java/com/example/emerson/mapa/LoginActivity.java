@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login()
     {
-        String URL = "http://192.168.1.43:3000/api/users/"+Usuario+"/existe";
+        String URL = "http://192.168.1.109:3000/api/users/"+Usuario+"/existe";
         JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET,
                 URL, null, new Response.Listener<JSONArray>() {
 

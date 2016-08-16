@@ -64,7 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 check();
-                Toast.makeText(MapsActivity.this, "JAJAJAJa", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -90,16 +90,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void check()
     {
         String idPunto= Punto.getSnippet();
-        String url = "http://192.168.1.43:3000/api/points/"+1+"/"+idPunto+"/check" ;
+        String url = "http://192.168.1.109:3000/api/points/"+1+"/"+idPunto+"/check" ;
         mMap.clear();
         StringRequest checkPunto = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
-
-                        
                         Puntos();
+                        Toast.makeText(MapsActivity.this, "Check", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener()
@@ -178,7 +177,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        String URL = "http://192.168.1.43:3000/api/points?lng="+location.getLatitude()+"&lat="+location.getLongitude();
+        String URL = "http://192.168.1.109:3000/api/points?lng="+location.getLatitude()+"&lat="+location.getLongitude();
         JsonArrayRequest req = new JsonArrayRequest(URL,
                 new Response.Listener<JSONArray>() {
                     @Override

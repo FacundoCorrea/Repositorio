@@ -11,24 +11,30 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    int Usuario;
-    int result;
+    String Usuario;
+    String result;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        queue = Volley.newRequestQueue(this);
         Button botonLogin = (Button)findViewById(R.id.button2);
         final EditText editText = (EditText)findViewById(R.id.editText);
         botonLogin.setOnClickListener(new View.OnClickListener() {
@@ -36,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                Usuario = Integer.parseInt(editText.getText().toString());
+                Usuario = editText.getText().toString();
                 Login();
 
 
@@ -46,15 +52,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login()
     {
-        String URL = "http://10.0.2.2:3000/api/users?id="+Usuario+"/existe";
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                URL, null, new Response.Listener<JSONObject>() {
+        String URL = "http://192.168.1.43:3000/api/users/"+Usuario+"/existe";
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET,
+                URL, null, new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 try {
-                    result = response.getInt("count");
-                    Check();
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject object = (JSONObject) response.get(i);
+                        result = object.getString("count");
+                        Check();
+                    }
                 }
                 catch(Exception e){
                     e.printStackTrace();
@@ -66,12 +75,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(error.getMessage());
             }
         });
+
+        queue.add(req);
     }
     public void Check()
     {
-        if(result == 1)
+        if(result.equals("1"))
         {
             startActivity(new Intent(LoginActivity.this,MapsActivity.class));
         }
